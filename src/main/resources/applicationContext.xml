@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	   http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	   http://www.springframework.org/schema/aop
+	   http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+       http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+    <!-- 引入peoperties文件
+    我们更多地是采用第一种写法，第二种写法不常用因为很复杂。
+        -->
+
+    <!-- 事务管理器 对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
+    -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+    <!-- 通知  对事务进行增强（通知）需要编写切入点和具体执行事务细节-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 传播行为 -->
+            <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="false"></tx:method>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- aop 编写aop,让spring自动对目标生成代理，需要使用aspectJ的表达式-->
+    <aop:config>
+        <aop:pointcut id="txPointCut" expression="execution(* com.example.demo.jdbc.*.*(..))"/>
+        <!-- 切面：将切入点与通知整合-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+    </aop:config>
+
+
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!--数据库驱动-->
+        <property name="driverClassName"
+                  value="${jdbc.driver}"/><!-- 这里的driver,url,username,password都是根据 db.peoperties文件写的-->
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+
+    <!--配置数据库模板-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!-- 默认必须使用数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="accountDao" class="com.example.demo.jdbc.impl.AccountDaoImpl">
+        <!-- 默认必须使用数据源-->
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+</beans>

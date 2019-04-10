@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 配置环境，默认环境id为mysql-->
+	<environments default="mysql">
+		<!--配置id为mysql的数据库环境-->
+		<environment id="mysql">
+			<!--使用JDBC的事务管理-->
+			<transactionManager type="JDBC"></transactionManager>
+			<!--数据库连接池-->
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://127.0.0.1:3306/mydb?serverTimezone=GMT%2B8"/>
+				<property name="username" value="root"/>
+				<property name="password" value="admin123"/>
+			</dataSource>
+		</environment>
+	</environments>
+<mappers>
+	<mapper resource="mapper/PersonInfoMapper.xml"></mapper>
+</mappers>
+
+	<!-- 全局配置参数，需要时再设置 -->
+	<!--<settings>
+		&lt;!&ndash; 打开延迟加载 的开关 &ndash;&gt;
+		<setting name="lazyLoadingEnabled" value="true"/>
+		&lt;!&ndash; 将积极加载改为消极加载即按需要加载 &ndash;&gt;
+		<setting name="aggressiveLazyLoading" value="false"/>
+		&lt;!&ndash; 开启二级缓存 &ndash;&gt;
+		<setting name="cacheEnabled" value="true"/>
+		&lt;!&ndash; 支持驼峰命名法 &ndash;&gt;
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>-->
+
+	<!--&lt;!&ndash; 配置别名 &ndash;&gt;
+	<typeAliases>
+		&lt;!&ndash; 批量扫描别名 &ndash;&gt;
+		<package name="com.example.demo.po"/>
+		&lt;!&ndash; pojo中有自己拓展po中类的一些custom类，statement中参数要用到别名 &ndash;&gt;
+		<package name="com.lqm.home.pojo"/>
+	</typeAliases>-->
+
+	<!-- 配置mapper
+	由于使用spring和mybatis的整合包进行mapper扫描，这里不需要配置了。
+	必须遵循：mapper.xml和mapper.java文件同名且在一个目录
+	 -->
+
+	<!-- <mappers>
+
+	</mappers> -->
+</configuration>

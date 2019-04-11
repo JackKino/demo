@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--//namespace表示命名空间-->
+<mapper namespace="com.example.demo.mybatis.mapper.PersonInfoMapper">
+    <!--根据客户编号获取信息-->
+    <select id="getInfo"  resultType="personInfo">
+        select * from info
+    </select>
+    <insert id="insertUser" parameterType="personInfo"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert  into info (username,score,address)
+        values (#{username},#{score},#{address})
+    </insert>
+
+    <insert id="insertBatchUser" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into info (username,score,address) values
+        <foreach item="item" collection="list" index="index" separator=",">
+            (#{item.username}, #{item.score}, #{item.address})
+        </foreach>
+    </insert>
+
+    <select id="queryInfo" resultType="personInfo">
+        select * from info WHERE id=#{id} and address=#{address};
+    </select>
+</mapper>

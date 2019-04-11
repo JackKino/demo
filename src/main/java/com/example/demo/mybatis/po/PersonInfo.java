@@ -2,7 +2,7 @@ package com.example.demo.mybatis.po;
 
 public class PersonInfo {
     private Integer id;
-    private String name;
+    private String username;
     private Integer score;
     private String address;
 
@@ -15,12 +15,12 @@ public class PersonInfo {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getScore() {
@@ -41,6 +41,6 @@ public class PersonInfo {
 
     @Override
     public String toString() {
-        return "Persion   "+"id=="+id+"   name=="+name+"   address=="+address;
+        return "Person   "+"id=="+id+"   name=="+username+"   address=="+address;
     }
 }

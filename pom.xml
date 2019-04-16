@@ -14,8 +14,12 @@
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
 
+
+
+    <!-- 刚开始的时候，我很不习惯，也不太理解为什么要用下面的标签，后来才觉得，代码就该这样。。。修改的时候也会特别的方便 -->
     <properties>
         <java.version>1.8</java.version>
+        <fastjson.version>1.2.11</fastjson.version>
     </properties>
 
     <dependencies>
@@ -43,7 +47,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
 
     </dependencies>
 

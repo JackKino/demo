@@ -14,6 +14,29 @@ import java.util.List;
 
 public class MyBatisTest {
     private List<PersonInfo> personInfos=new ArrayList<>();
+
+    @Test
+    public void createPerson() throws Exception{
+        //读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //根据配置文件构建SQLSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        //通过sqlSessionFactory创建sqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            sqlSession.insert("com.example.demo.mybatis.mapper.PersonInfoMapper.createPersonInfo");
+            //提交会话
+            sqlSession.commit();
+            System.out.println("数据库表prerson创建成功");
+        }catch (Exception e){
+
+        }
+        finally {
+            sqlSession.close();
+        }
+    }
+
     @Test
     public void findPersonByIdTest() throws Exception {
         //读取配置文件

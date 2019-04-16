@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--//namespace表示命名空间-->
+<mapper namespace="com.example.demo.mybatis.mapper.CategoryMapper">
+   <update id="createProduct">
+       create table product(
+                c_id int primary key auto_increment,
+                name varchar(50) not null,
+                price double not null)
+   </update>
+
+    <update id="createCategory">
+       create table category(
+                c_id int not null,
+                name varchar(50) not null
+                )
+   </update>
+    <resultMap id="queryProduct" type="category">
+        <id column="c_id" property="id" jdbcType="INTEGER"></id>
+        <result column="category_name" property="category_name" jdbcType="VARCHAR"/>
+       <!-- //一对多查询-->
+        <collection property="products" javaType="java.util.List" ofType="product">
+            <id column="c_id" property="id" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+            <result column="price" property="price" jdbcType="VARCHAR" />
+            <result column="p_id" property="p_id" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+    <select id="queryProductList" parameterType="int" resultMap="queryProduct">
+            select   c.category_name 'category_name', c.c_id 'c_id',p.name 'name',p.price 'price',p.p_id 'p_id'
+            from category c,product p where c.c_id = p.c_id and c.c_id=#{id}
+            /*left join product p on c.c_id = p.c_id*/
+    </select>
+
+    <resultMap id="queryProduct2" type="product">
+        <id column="c_id" property="id" jdbcType="INTEGER"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="queryProductTable" resultMap="queryProduct2">
+            select  c.c_id 'c_id', c.name 'name'
+            from product c
+
+    </select>
+</mapper>

@@ -3,6 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--//namespace表示命名空间-->
 <mapper namespace="com.example.demo.mybatis.mapper.PersonInfoMapper">
+
+    <update id="createPersonInfo">
+       create table info(
+                id int primary key auto_increment,
+                username varchar(50) not null,
+                score double not null,
+                address varchar(50) not null
+                )
+   </update>
     <!--根据客户编号获取信息-->
     <select id="getInfo"  resultType="personInfo">
         select * from info

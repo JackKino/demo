@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--//namespace表示命名空间-->
+<mapper namespace="com.example.demo.mybatis.mapper.TaskMapper">
+
+    <select id="getTask" parameterType="long" resultType="task">
+        select * from t_task where id=#{pid}
+    </select>
+
+
+</mapper>

@@ -5,16 +5,16 @@ import org.apache.ibatis.type.Alias;
 @Alias(value = "product")
 public class Product {
     private Integer p_id;
-    private Integer id;
+    private Integer c_id;
     private String name;
     private Double price;
 
     public Integer getId() {
-        return id;
+        return c_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer c_id) {
+        this.c_id = c_id;
     }
 
     public String getName() {

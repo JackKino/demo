@@ -67,14 +67,10 @@ public class CategoryTest {
         //通过sqlSessionFactory创建sqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
-            Category categories=sqlSession.selectOne("com.example.demo.mybatis.mapper.CategoryMapper.queryProductList",1001);
+            List<Category> categories=sqlSession.selectList("com.example.demo.mybatis.mapper.CategoryMapper.queryProductList");
             //提交会话
             sqlSession.commit();
-          //  System.out.println("categories.size()=="+categories.size());
             System.out.println(JSON.toJSONString(categories));
-
-               List<Product> products=categories.getProducts();
-                System.out.println("products=="+products.size());
 
         }catch (Exception e){
             System.out.println(e.toString());

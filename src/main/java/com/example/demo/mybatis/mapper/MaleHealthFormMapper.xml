@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--//namespace表示命名空间-->
-<mapper namespace="com.example.demo.mybatis.mapper.TaskMapper">
+<mapper namespace="com.example.demo.mybatis.mapper.MaleHealthFormMapper">
     <!--
     eviction：缓存回收策略
 - LRU：最少使用原则，移除最长时间不使用的对象
@@ -18,11 +18,10 @@
            flushInterval="120000"
            size="1024"
            readOnly="true"/>
-
-    <select id="getTask" parameterType="long" resultType="task" flushCache="true" useCache="true">
-
-        select id,title,context from t_task where id=#{pid}
+    <select id="getMale" parameterType="long" resultType="MaleHealthForm" flushCache="false" useCache="true">
+        select * from t_male_health_form where emp_id=#{id}
     </select>
+
 
 
 </mapper>

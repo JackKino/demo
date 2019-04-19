@@ -3,13 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
+    <settings>
+       <!-- &lt;!&ndash; 打开延迟加载 的开关 &ndash;&gt;-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+       <!-- &lt;!&ndash; 将积极加载改为消极加载即按需要加载 &ndash;&gt;-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+       <!-- &lt;!&ndash; 开启二级缓存 &ndash;&gt;-->
+        <setting name="cacheEnabled" value="true"/>
+       <!-- &lt;!&ndash; 支持驼峰命名法 &ndash;&gt;-->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
     <!-- 配置别名 -->
     <typeAliases>
         <!-- 批量扫描别名 -->
         <package name="com.example.demo.mybatis.po"/>
         <!-- pojo中有自己拓展po中类的一些custom类，statement中参数要用到别名 -->
     </typeAliases>
+
+    <!-- mybatis-config.xml -->
+    <typeHandlers>
+        <package name="com.example.demo.mybatis.typeHandler"/>
+    </typeHandlers>
 
     <!-- 配置环境，默认环境id为mysql-->
     <environments default="mysql">
@@ -34,24 +48,12 @@
     </mappers>
 
     <!-- 全局配置参数，需要时再设置 -->
-    <!--<settings>
-        &lt;!&ndash; 打开延迟加载 的开关 &ndash;&gt;
-        <setting name="lazyLoadingEnabled" value="true"/>
-        &lt;!&ndash; 将积极加载改为消极加载即按需要加载 &ndash;&gt;
-        <setting name="aggressiveLazyLoading" value="false"/>
-        &lt;!&ndash; 开启二级缓存 &ndash;&gt;
-        <setting name="cacheEnabled" value="true"/>
-        &lt;!&ndash; 支持驼峰命名法 &ndash;&gt;
-        <setting name="mapUnderscoreToCamelCase" value="true" />
-    </settings>-->
+    <!---->
 
 
 
 
-    <!-- mybatis-config.xml -->
-   <!-- <typeHandlers>
-        <typeHandler handler="com.example.demo.mybatis.ExampleTypeHandler"/>
-    </typeHandlers>-->
+
 
     <!-- 配置mapper
     由于使用spring和mybatis的整合包进行mapper扫描，这里不需要配置了。

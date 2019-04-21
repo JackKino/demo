@@ -17,30 +17,34 @@
                 )
    </update>
     <resultMap id="queryProduct" type="category">
-        <id column="c_id" property="id" jdbcType="INTEGER"></id>
-        <result column="category_name" property="category_name" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="INTEGER"></id>
+        <result column="name" property="category_name" jdbcType="VARCHAR"/>
        <!-- //一对多查询-->
         <collection property="products"  ofType="product">
-            <id column="id" property="c_id" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
+            <id column="c_id" property="id" jdbcType="VARCHAR" />
+            <result column="p_name" property="name" jdbcType="VARCHAR" />
             <result column="price" property="price" jdbcType="VARCHAR" />
-            <result column="p_id" property="p_id" jdbcType="INTEGER" />
+
         </collection>
     </resultMap>
     <select id="queryProductList"  resultMap="queryProduct">
-            select   c.category_name 'category_name', c.id 'c_id',p.name 'name',p.price 'price',p.p_id 'p_id',p.c_id 'c_id'
+            select   c.name , c.id ,p.p_name ,p.price
             from category c left join product p on c.id = p.c_id
-            /*left join product p on c.c_id = p.c_id*/
+            /**/
     </select>
 
     <resultMap id="queryProduct2" type="product">
-        <id column="c_id" property="c_id" jdbcType="INTEGER"></id>
+        <id column="c_id" property="id" jdbcType="INTEGER"></id>
+        <result column="p_name" property="name" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="price" property="price" jdbcType="VARCHAR" />
     </resultMap>
     <select id="queryProductTable" resultMap="queryProduct2">
-            select  c.c_id 'c_id', c.name 'name'
+            select  c.c_id 'c_id', c.p_name 'name'
             from product c
+    </select>
+    <select id="findProduct"  parameterType="String"  resultType="product">
+         select  c_id as id,price,p_name as name from product where p_name like CONCAT('%',#{pname},'%')
 
     </select>
 </mapper>

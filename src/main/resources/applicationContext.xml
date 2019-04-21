@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
 	   http://www.springframework.org/schema/mvc
@@ -18,49 +18,65 @@
     我们更多地是采用第一种写法，第二种写法不常用因为很复杂。
         -->
 
-    <!-- 事务管理器 对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
-    -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
 
+    <!--开启扫描-->
+    <context:component-scan base-package="com.example.demo.service"/>
 
-   <!-- &lt;!&ndash; 通知  对事务进行增强（通知）需要编写切入点和具体执行事务细节&ndash;&gt;
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            &lt;!&ndash; 传播行为 &ndash;&gt;
-            <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="false"></tx:method>
-        </tx:attributes>
-    </tx:advice>
+    <!-- 引入db.properties -->
+    <context:property-placeholder location="classpath:db.properties" />
 
-    &lt;!&ndash; aop 编写aop,让spring自动对目标生成代理，需要使用aspectJ的表达式&ndash;&gt;
-    <aop:config>
-        <aop:pointcut id="txPointCut" expression="execution(* com.example.demo.jdbc.*.*(..))"/>
-        &lt;!&ndash; 切面：将切入点与通知整合&ndash;&gt;
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
-    </aop:config>
-
--->
-    <context:property-placeholder location="classpath:db.properties"/>
-
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <!--数据库驱动-->
         <property name="driverClassName"
                   value="${jdbc.driver}"/><!-- 这里的driver,url,username,password都是根据 db.peoperties文件写的-->
         <property name="url" value="${jdbc.url}"></property>
         <property name="username" value="${jdbc.username}"></property>
         <property name="password" value="${jdbc.password}"></property>
+        <!-- 连接初始值，连接池启动时创建的连接数量的初始值  默认值是0 -->
+        <property name="initialSize" value="${jdbc.initialSize}" />
+        <!-- 连接池的最大值，同一时间可以从池分配的最多连接数量，0时无限制   默认值是8 -->
+        <property name="maxTotal" value="${jdbc.maxActive}" />
+        <!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 ，0时无限制  默认值是8 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}" />
+        <!-- 最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请  默认值是0 -->
+        <property name="minIdle" value="${jdbc.minIdle}" />
+
     </bean>
 
-
-    <!--配置数据库模板-->
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <!-- 默认必须使用数据源-->
+    <!-- 事务管理器 对mybatis操作数据库事务控制，spring使用jdbc的事务控制类
+      -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-
-    <bean id="accountDao" class="com.example.demo.jdbc.impl.AccountDaoImpl">
-        <!-- 默认必须使用数据源-->
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--配置Mybatis工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--指定核心配置文件位置-->
+    <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 自动扫描mapping.xml文件，**表示迭代查找,也可在sqlMapConfig.xml中单独指定xml文件-->
+<!--
+        <property name="mapperLocations" value="classpath:com/example/demo/mybatis/**/*.xml" />
+-->
     </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 ,包下的类需要使用@MapperScan注解,否则容器注入会失败 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.example.demo.mybatis.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+   <!-- &lt;!&ndash;配置数据库模板&ndash;&gt;
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        &lt;!&ndash; 默认必须使用数据源&ndash;&gt;
+        <property name="dataSource" ref="dataSource"/>
+    </bean>-->
+
+    <!--  <bean id="workCardMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+          <property name="mapperInterface" value="com.example.demo.mybatis.mapper.WorkCardMapper"/>
+          <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+      </bean>-->
 </beans>

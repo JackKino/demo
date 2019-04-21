@@ -16,6 +16,10 @@
     <select id="getInfo"  resultType="personInfo">
         select * from info
     </select>
+
+    <select id="getInfoById"  resultType="personInfo">
+        select * from info where id=#{id}
+    </select>
     <insert id="insertUser" parameterType="personInfo"
             useGeneratedKeys="true"
             keyProperty="id">
@@ -33,5 +37,17 @@
 
     <select id="queryInfo" resultType="personInfo">
         select * from info WHERE id=#{id} and address=#{address};
+
     </select>
+
+    <update id="createTable">
+       create table info(
+          id integer   primary key  auto_increment,
+          username varchar(50) not null ,
+          score double not null,
+          address varchar(50) not null)
+    </update>
+    <delete id="deleteTable">
+        drop  table info
+    </delete>
 </mapper>

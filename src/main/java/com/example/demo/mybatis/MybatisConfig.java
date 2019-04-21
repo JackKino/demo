@@ -41,4 +41,6 @@ public class MybatisConfig implements TransactionManagementConfigurer {
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
+
+
 }

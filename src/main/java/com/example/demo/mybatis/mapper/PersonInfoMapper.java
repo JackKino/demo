@@ -11,4 +11,5 @@ public interface PersonInfoMapper {
  List<PersonInfo> getInfo2();
 
  PersonInfo queryInfo(@Param("id") int id, @Param("address")String flower);
+
 }

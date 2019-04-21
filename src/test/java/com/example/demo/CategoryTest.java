@@ -70,7 +70,10 @@ public class CategoryTest {
             List<Category> categories=sqlSession.selectList("com.example.demo.mybatis.mapper.CategoryMapper.queryProductList");
             //提交会话
             sqlSession.commit();
+          //  System.out.println("categories.size()=="+categories.size());
             System.out.println(JSON.toJSONString(categories));
+
+
 
         }catch (Exception e){
             System.out.println(e.toString());

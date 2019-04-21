@@ -1,6 +1,8 @@
 package com.example.demo.mybatis.po;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     private Long id;
     private String title;
     private String context;

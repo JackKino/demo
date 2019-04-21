@@ -21,6 +21,39 @@
     <select id="getWorkCard" parameterType="long" resultType="workCard" flushCache="false" useCache="true">
         select * from t_work_card where emp_id=#{id}
     </select>
+    <select id="getWorkCardByNameOrMobile"  parameterType="workCard" resultType="workCard" flushCache="false" useCache="true">
+        select * from t_work_card where 1=1
+        <choose>
+            <when test="realName!=null and realName!=''">
+                 and real_name=#{realName}
+            </when>
+            <when test="mobile!=null and mobile!=''">
+                and mobile like  concat('%',#{mobile},'%')
+            </when>
+            <otherwise>
+                and note is not null
+            </otherwise>
+        </choose>
+    </select>
+<update id="updateWorkCardById" parameterType="workCard" >
+    update t_work_card
+    <set>
+        <if test="realName!=null and realName!=''">
+            real_name=#{realName}
+        </if>
+        <if test="mobile!=null and mobile!=''">
+            mobile=#{mobile}
+        </if>
+    </set>
+    where  emp_id=#{empId}
+</update>
 
+    <select id="getWorkCarByForEach" resultType="workCard" parameterType="List">
+       select * from t_work_card where emp_id in
+       <foreach collection="list" item="empId" index="index"
+               open="(" separator="," close=")" >
+        #{empId}
+       </foreach>
+    </select>
 
 </mapper>

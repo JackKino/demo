@@ -3,6 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--//namespace表示命名空间-->
 <mapper namespace="com.example.demo.mybatis.mapper.EmployeeTaskMapper">
+   <!--配置二级缓存-->
+
     <resultMap id="employeeTaskMap" type="employeeTask">
         <id column="id" property="id"/>
         <result column="emp_id" property="empId"/>

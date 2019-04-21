@@ -97,9 +97,9 @@ public class MyBatisTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         //sqlsession执行映射文件中定义的sql,并返回映射结果
         PersonInfo info = new PersonInfo();
-        info.setUsername("Mirtha");
+        info.setUsername("Jack2");
         info.setScore(88);
-        info.setAddress("NewYork");
+        info.setAddress("深圳");
 
 
         try {
@@ -172,4 +172,78 @@ public class MyBatisTest {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void createTable() throws Exception {
+        //读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //根据配置文件构建SQLSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        //通过sqlSessionFactory创建sqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //sqlsession执行映射文件中定义的sql,并返回映射结果
+        try {
+            sqlSession.update("com.example.demo.mybatis.mapper.PersonInfoMapper.createTable");
+            //提交会话
+            sqlSession.commit();
+            System.out.println("账户表info创建成功！");
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        finally {
+            sqlSession.close();
+        }
+    }
+    @Test
+    public void deleteTable() throws Exception {
+        //读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //根据配置文件构建SQLSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        //通过sqlSessionFactory创建sqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //sqlsession执行映射文件中定义的sql,并返回映射结果
+        try {
+            sqlSession.update("com.example.demo.mybatis.mapper.PersonInfoMapper.deleteTable");
+            //提交会话
+            sqlSession.commit();
+            System.out.println("账户表info删除成功！");
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        finally {
+            sqlSession.close();
+        }
+    }
+
+
+    @Test
+    public void findPersonById() throws Exception {
+        //读取配置文件
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        //根据配置文件构建SQLSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        //通过sqlSessionFactory创建sqlSession
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //sqlsession执行映射文件中定义的sql,并返回映射结果
+
+        //提交会话
+        try {
+            PersonInfo personInfo = sqlSession.selectOne("com.example.demo.mybatis.mapper.PersonInfoMapper.getInfoById",5);
+            //打印返回值信息
+            //提交会话
+            sqlSession.commit();
+            System.out.println(personInfo.toString());
+
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        finally {
+            sqlSession.close();
+        }
+    }
+
 }

@@ -15,11 +15,9 @@
     <description>Demo project for Spring Boot</description>
 
 
-
     <!-- 刚开始的时候，我很不习惯，也不太理解为什么要用下面的标签，后来才觉得，代码就该这样。。。修改的时候也会特别的方便 -->
     <properties>
         <java.version>1.8</java.version>
-        <fastjson.version>1.2.11</fastjson.version>
     </properties>
 
     <dependencies>
@@ -56,11 +54,24 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
+            <version>1.2.24</version>
         </dependency>
+        <!--DBCP2和连接池-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -76,8 +87,8 @@
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
-                <include>**/*.properties</include>
-                <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
@@ -89,10 +100,13 @@
             </resource>
             <resource>
 
-            <directory>src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <includes>
-                <include>**/*.properties</include> <include>**/*.xml</include>
-                </includes> <filtering>false</filtering> </resource>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
             <resource>
                 <directory>com/example/demo/mybatis/mapper</directory>
                 <includes>
